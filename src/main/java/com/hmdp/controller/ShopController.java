@@ -3,6 +3,7 @@ package com.hmdp.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hmdp.constant.CacheConstant;
 import com.hmdp.dto.Result;
 import com.hmdp.entity.Shop;
 import com.hmdp.service.IShopService;
@@ -27,13 +28,22 @@ public class ShopController {
     public IShopService shopService;
 
     /**
+     * 缓存预热
+     * @return
+     */
+    @PutMapping("/warm/{id}")
+    public Result warmCache(@PathVariable Long id) throws InterruptedException {
+        return shopService.warm(id);
+    }
+
+    /**
      * 根据id查询商铺信息
      * @param id 商铺id
      * @return 商铺详情数据
      */
     @GetMapping("/{id}")
-    public Result queryShopById(@PathVariable("id") Long id) {
-        return Result.ok(shopService.getById(id));
+    public Result queryShopById(@PathVariable("id") Long id) throws InterruptedException {
+        return shopService.queryById(id);
     }
 
     /**
@@ -57,8 +67,9 @@ public class ShopController {
     @PutMapping
     public Result updateShop(@RequestBody Shop shop) {
         // 写入数据库
-        shopService.updateById(shop);
-        return Result.ok();
+        // shopService.updateById(shop);
+        // return Result.ok();
+        return shopService.update(shop);
     }
 
     /**
