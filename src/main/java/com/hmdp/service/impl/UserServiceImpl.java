@@ -5,6 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hmdp.constant.CacheConstant;
 import com.hmdp.constant.ErrorMessage;
 import com.hmdp.constant.LoginConstant;
 import com.hmdp.dto.LoginFormDTO;
@@ -14,6 +15,7 @@ import com.hmdp.entity.User;
 import com.hmdp.mapper.UserMapper;
 import com.hmdp.service.IUserService;
 import com.hmdp.utils.RegexUtils;
+import com.hmdp.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +119,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setNickName(LoginConstant.USER_PREFIX+RandomUtil.randomString(5));
         save(user);
         return user;
+    }
+
+    @Override
+    public Result logout() {
+        Long id = UserHolder.getUser().getId();
+        stringRedisTemplate.expire(LoginConstant.KEY_OF_USER_PREFIX+id,0,TimeUnit.SECONDS);
+        return Result.ok();
     }
 }

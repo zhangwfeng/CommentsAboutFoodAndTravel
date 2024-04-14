@@ -17,4 +17,9 @@ public class CacheConstant {
 
     public static final String LOCK_SHOP_PREFIX="lock:shop:";
 
+    public static final String BLOG_LIKE_PREFIX="blog:like:";
+
+    public static final String LOCK_ORDER_PREFIX="lock:order:";
+
+    public static final String FOLLOW_PREFIX = "follow:";
 }

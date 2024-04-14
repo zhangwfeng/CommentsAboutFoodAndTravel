@@ -41,10 +41,10 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
     public Result queryById(Long id) throws InterruptedException {
 
         //防止缓存穿透
-        //Shop shop = redisCacheUtils.queryWithPassThrough(CacheConstant.CACHE_SHOP_PREFIX, id, Shop.class, this::getById, CacheConstant.CACHE_SHOP_TTL, TimeUnit.MINUTES);
+        Shop shop = redisCacheUtils.queryWithPassThrough(CacheConstant.CACHE_SHOP_PREFIX, id, Shop.class, this::getById, CacheConstant.CACHE_SHOP_TTL, TimeUnit.MINUTES);
 
         //防止缓存击穿
-        Shop shop = redisCacheUtils.queryWithBreakdown(CacheConstant.CACHE_SHOP_PREFIX, id,Shop.class, this::getById, CacheConstant.CACHE_SHOP_TTL);
+        //Shop shop = redisCacheUtils.queryWithBreakdown(CacheConstant.CACHE_SHOP_PREFIX, id,Shop.class, this::getById, CacheConstant.CACHE_SHOP_TTL);
 
         if(shop==null){
             return Result.fail(ErrorMessage.QUERY_DATA_NOT_EXIST);
